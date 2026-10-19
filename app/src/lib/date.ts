@@ -1,0 +1,5 @@
+export function todayYmd(): string { const d = new Date(); const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+export function utcDate(ymd: string): Date { const [y, m, d] = ymd.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d)); }
+export function dateRangeDays(from: string, to: string): number { return Math.floor((utcDate(to).getTime() - utcDate(from).getTime()) / 86400000) + 1; }
+export function addDays(ymd: string, count: number): string { const d = utcDate(ymd); d.setUTCDate(d.getUTCDate() + count); return d.toISOString().slice(0, 10); }
+export function addMonths(ymd: string, count: number): string { const [y, m, d] = ymd.split('-').map(Number); const first = new Date(Date.UTC(y, m - 1 + count, 1)); const last = new Date(Date.UTC(first.getUTCFullYear(), first.getUTCMonth() + 1, 0)).getUTCDate(); first.setUTCDate(Math.min(d, last)); return first.toISOString().slice(0, 10); }
